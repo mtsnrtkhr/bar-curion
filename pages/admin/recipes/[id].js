@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import Layout from '../../../components/Layout'
+import AdminLayout from '../../components/AdminLayout';
 import AdminRecipeForm from '../../../components/AdminRecipeForm'
 import { initDB, getRecipeById, updateRecipe } from '../../../lib/lowdb'
 import { fetchRecipesData } from '../../../lib/github'
@@ -35,9 +35,9 @@ export default function EditRecipe() {
   if (!recipe) return <div>Loading...</div>
 
   return (
-    <Layout>
+    <AdminLayout>
       <h1 className="text-3xl font-bold mb-4">レシピ編集: {recipe.name}</h1>
       <AdminRecipeForm initialRecipe={recipe} onSubmit={handleSubmit} />
-    </Layout>
+    </AdminLayout>
   )
 }

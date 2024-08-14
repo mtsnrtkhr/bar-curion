@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import Layout from '../../../components/Layout'
+import AdminLayout from '../../components/AdminLayout';
 import AdminRecipeForm from '../../../components/AdminRecipeForm'
 import { addRecipe } from '../../../lib/lowdb'
 
@@ -17,9 +17,9 @@ export default function NewRecipe() {
   }
 
   return (
-    <Layout>
+    <AdminLayout>
       <h1 className="text-3xl font-bold mb-4">新規レシピ作成</h1>
       <AdminRecipeForm onSubmit={handleSubmit} />
-    </Layout>
+    </AdminLayout>
   )
 }
