@@ -1,21 +1,41 @@
-import { useEffect, useState } from 'react'
-import AdminLayout from '../../components/AdminLayout';
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { initDB, getRecipes } from '../../../lib/lowdb'
-import { fetchRecipesData } from '../../../lib/github'
+import AdminLayout from '../../../components/AdminLayout'
+import RecipeSearch from '../../../components/RecipeSearch'
 
 export default function AdminRecipes() {
   const [recipes, setRecipes] = useState([])
+  const [filteredRecipes, setFilteredRecipes] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    async function loadData() {
-      await initDB()
-      const data = await fetchRecipesData()
-      await getRecipes() // This will initialize the db with the fetched data
-      setRecipes(data.cocktails)
-    }
-    loadData()
+    fetchRecipes()
   }, [])
+
+  const fetchRecipes = async () => {
+    try {
+      setLoading(true)
+      const response = await fetch('/api/recipes')
+      if (!response.ok) throw new Error('Failed to fetch recipes')
+      const data = await response.json()
+      setRecipes(data.cocktails)
+      setFilteredRecipes(data.cocktails)
+    } catch (error) {
+      console.error('Error fetching recipes:', error)
+      alert('レシピの取得に失敗しました')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleSearch = (searchTerm) => {
+    const filtered = recipes.filter(recipe =>
+      recipe.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      recipe.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      recipe.ingredients.some(ing => ing.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    )
+    setFilteredRecipes(filtered)
+  }
 
   return (
     <AdminLayout>
@@ -23,15 +43,20 @@ export default function AdminRecipes() {
       <Link href="/admin/recipes/new" className="mb-4 inline-block bg-blue-500 text-white px-4 py-2 rounded">
         新規レシピ作成
       </Link>
-      <ul className="space-y-2">
-        {recipes.map(recipe => (
-          <li key={recipe.id} className="border p-2 rounded">
-            <Link href={`/admin/recipes/${recipe.id}`}>
-              {recipe.name}
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <RecipeSearch onSearch={handleSearch} />
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <ul className="space-y-2">
+          {filteredRecipes.map(recipe => (
+            <li key={recipe.id} className="border p-2 rounded">
+              <Link href={`/admin/recipes/${recipe.id}`}>
+                {recipe.name} - {recipe.category}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </AdminLayout>
   )
 }

@@ -1,23 +1,34 @@
 // components/AdminRecipeForm.js
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 
 export default function AdminRecipeForm({ initialRecipe, onSubmit }) {
   const [recipe, setRecipe] = useState(initialRecipe || {
     name: '',
     category: '',
     ingredients: [{ name: '', amount: '' }],
-    instructions: ''
+    instructions: '',
+    image: null
   })
+  const [imagePreview, setImagePreview] = useState(null)
 
   useEffect(() => {
-    if (initialRecipe) {
-      setRecipe(initialRecipe)
+    if (initialRecipe && initialRecipe.image) {
+      setImagePreview(`/images/recipes/${initialRecipe.image}`)
     }
   }, [initialRecipe])
 
   const handleChange = (e) => {
     setRecipe({ ...recipe, [e.target.name]: e.target.value })
+  }
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      setRecipe({ ...recipe, image: file })
+      setImagePreview(URL.createObjectURL(file))
+    }
   }
 
   const handleIngredientChange = (index, e) => {
@@ -42,9 +53,19 @@ export default function AdminRecipeForm({ initialRecipe, onSubmit }) {
     setRecipe({ ...recipe, ingredients: newIngredients })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    onSubmit(recipe)
+    const formData = new FormData()
+    for (const key in recipe) {
+      if (key === 'ingredients') {
+        formData.append(key, JSON.stringify(recipe[key]))
+      } else if (key === 'image' && recipe[key] instanceof File) {
+        formData.append('image', recipe[key])
+      } else {
+        formData.append(key, recipe[key])
+      }
+    }
+    await onSubmit(formData)
   }
 
   return (
@@ -112,6 +133,20 @@ export default function AdminRecipeForm({ initialRecipe, onSubmit }) {
           className="w-full p-2 border rounded"
           rows="4"
         ></textarea>
+      </div>
+      <div>
+        <label className="block">レシピ画像:</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          className="w-full p-2 border rounded"
+        />
+        {imagePreview && (
+          <div className="mt-2">
+            <Image src={imagePreview} alt="Recipe preview" width={200} height={200} objectFit="cover" />
+          </div>
+        )}
       </div>
       <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">
         {initialRecipe ? 'レシピを更新' : 'レシピを作成'}

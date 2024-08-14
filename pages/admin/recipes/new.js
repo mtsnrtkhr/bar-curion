@@ -1,14 +1,17 @@
 import { useRouter } from 'next/router'
-import AdminLayout from '../../components/AdminLayout';
+import AdminLayout from '../../../components/AdminLayout'
 import AdminRecipeForm from '../../../components/AdminRecipeForm'
-import { addRecipe } from '../../../lib/lowdb'
 
 export default function NewRecipe() {
   const router = useRouter()
 
-  const handleSubmit = async (recipe) => {
+  const handleSubmit = async (formData) => {
     try {
-      await addRecipe(recipe)
+      const response = await fetch('/api/recipes', {
+        method: 'POST',
+        body: formData,
+      })
+      if (!response.ok) throw new Error('Failed to create recipe')
       router.push('/admin/recipes')
     } catch (error) {
       console.error('Error:', error)

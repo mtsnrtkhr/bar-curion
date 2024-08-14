@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import AdminLayout from '../../components/AdminLayout';
+import AdminLayout from '../../../components/AdminLayout'
 import AdminRecipeForm from '../../../components/AdminRecipeForm'
-import { initDB, getRecipeById, updateRecipe } from '../../../lib/lowdb'
-import { fetchRecipesData } from '../../../lib/github'
 
 export default function EditRecipe() {
   const router = useRouter()
@@ -11,20 +9,24 @@ export default function EditRecipe() {
   const [recipe, setRecipe] = useState(null)
 
   useEffect(() => {
-    async function loadData() {
-      if (id) {
-        await initDB()
-        await fetchRecipesData() // This will initialize the db with the fetched data
-        const recipeData = await getRecipeById(id)
-        setRecipe(recipeData)
-      }
+    if (id) {
+      fetch(`/api/recipes/${id}`)
+        .then(res => res.json())
+        .then(setRecipe)
+        .catch(error => {
+          console.error('Error fetching recipe:', error)
+          alert('レシピの取得に失敗しました')
+        })
     }
-    loadData()
   }, [id])
 
-  const handleSubmit = async (updatedRecipe) => {
+  const handleSubmit = async (formData) => {
     try {
-      await updateRecipe(id, updatedRecipe)
+      const response = await fetch(`/api/recipes/${id}`, {
+        method: 'PUT',
+        body: formData,
+      })
+      if (!response.ok) throw new Error('Failed to update recipe')
       router.push('/admin/recipes')
     } catch (error) {
       console.error('Error:', error)

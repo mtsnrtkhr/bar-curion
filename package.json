@@ -14,6 +14,7 @@
     "@octokit/rest": "^21.0.1",
     "cos-similarity": "^2.0.0",
     "d3": "^7.9.0",
+    "formidable": "^3.5.1",
     "lowdb": "^7.0.1",
     "next": "14.2.5",
     "next-auth": "^4.24.7",
