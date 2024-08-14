@@ -14,6 +14,7 @@ export default function Layout({ children }) {
           <ul className="flex space-x-4">
             <li><Link href="/">ホーム</Link></li>
             <li><Link href="/recipes">レシピ一覧</Link></li>
+            <li><Link href="/graph">関係グラフ</Link></li>
             <li><Link href="/admin">管理画面</Link></li>
           </ul>
         </nav>
