@@ -1,4 +1,4 @@
-import { getRecipes, updateRecipes, uploadImage } from '../../../lib/github';
+import { getRecipes, updateRecipes, uploadImage, getImageMetadata, updateImageMetadata } from '../../../lib/github';
 import formidable from 'formidable';
 import fs from 'fs/promises';
 
@@ -36,10 +36,18 @@ export default async function handler(req, res) {
         };
 
         if (files.image) {
-          const imageName = `${newRecipe.id}-${files.image.name}`;
           const imageBuffer = await fs.readFile(files.image.path);
-          await uploadImage(imageName, imageBuffer);
-          newRecipe.image = imageName;
+          const imageMetadata = {
+            title: newRecipe.name,
+            uploadDate: new Date().toISOString(),
+            fileSize: files.image.size,
+            width: 1200, // これは実際の画像サイズに応じて調整する必要があります
+            height: 800, // これは実際の画像サイズに応じて調整する必要があります
+            recipeId: newRecipe.id,
+            uploadedBy: fields.uploadedBy
+          };
+          const uploadedImage = await uploadImage(imageBuffer, imageMetadata);
+          newRecipe.image = uploadedImage.path;
         }
 
         recipes.cocktails.push(newRecipe);

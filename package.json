@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "export": "next build && next export"
+    "export": "next export",
+    "build-export": "next build && next export",
+    "generate-graph": "node lib/graph-generator.js",
+    "deploy": "npm run generate-graph && npm run build-export"
   },
   "dependencies": {
     "@octokit/auth-app": "^7.1.0",
@@ -21,7 +24,8 @@
     "octokit": "^4.0.2",
     "react": "^18",
     "react-dom": "^18",
-    "react-force-graph": "^1.44.4"
+    "react-force-graph": "^1.44.4",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "typescript": "^5",

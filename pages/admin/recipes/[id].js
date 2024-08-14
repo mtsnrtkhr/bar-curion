@@ -7,6 +7,7 @@ export default function EditRecipe() {
   const router = useRouter()
   const { id } = router.query
   const [recipe, setRecipe] = useState(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     if (id) {
@@ -21,16 +22,32 @@ export default function EditRecipe() {
   }, [id])
 
   const handleSubmit = async (formData) => {
+    setIsSubmitting(true)
     try {
       const response = await fetch(`/api/recipes/${id}`, {
         method: 'PUT',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.get('name'),
+          category: formData.get('category'),
+          ingredients: JSON.parse(formData.get('ingredients')),
+          instructions: formData.get('instructions'),
+          image: recipe.image // 既存の画像を維持
+        }),
       })
-      if (!response.ok) throw new Error('Failed to update recipe')
+
+      if (!response.ok) {
+        throw new Error('Failed to update recipe')
+      }
+
       router.push('/admin/recipes')
     } catch (error) {
       console.error('Error:', error)
       alert('レシピの更新に失敗しました')
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -39,7 +56,7 @@ export default function EditRecipe() {
   return (
     <AdminLayout>
       <h1 className="text-3xl font-bold mb-4">レシピ編集: {recipe.name}</h1>
-      <AdminRecipeForm initialRecipe={recipe} onSubmit={handleSubmit} />
+      <AdminRecipeForm initialRecipe={recipe} onSubmit={handleSubmit} isSubmitting={isSubmitting} />
     </AdminLayout>
   )
 }

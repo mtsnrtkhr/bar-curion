@@ -1,32 +1,55 @@
-name: Deploy to GitHub Pages
+name: Update Data and Deploy
 
 on:
   push:
     branches:
       - main
-  workflow_run:
-    workflows: ["Update Data"]
-    types:
-      - completed
+    paths:
+      - 'data/recipes.json'
+      - 'public/images/recipes/**'
+  workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  update-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2  # To be able to get the changed files
+
+      - name: Get changed files
+        id: changed-files
+        run: |
+          echo "files=$(git diff --name-only HEAD^ HEAD | grep -v '^public/images/recipes/' | tr '\n' ' ')" >> $GITHUB_OUTPUT
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        if: steps.changed-files.outputs.files != ''
+        uses: actions/setup-node@v3
         with:
           node-version: '20'
 
       - name: Install dependencies
+        if: steps.changed-files.outputs.files != ''
         run: npm ci
 
+      - name: Generate graph data
+        if: steps.changed-files.outputs.files != ''
+        run: node lib/graph-generator.js
+
+      - name: Commit graph data
+        if: steps.changed-files.outputs.files != ''
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add data/graph-data.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update graph data" && git push)
+
       - name: Build
+        if: steps.changed-files.outputs.files != ''
         run: npm run build && npm run export
 
       - name: Deploy to GitHub Pages
+        if: steps.changed-files.outputs.files != ''
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import Layout from '../../components/Layout'
 import { initDB, getRecipeById } from '../../lib/lowdb'
 import { fetchRecipesData } from '../../lib/github'
@@ -26,6 +27,18 @@ export default function RecipeDetail() {
   return (
     <Layout>
       <h1 className="text-3xl font-bold mb-4">{recipe.name}</h1>
+      {recipe.image && (
+        <div className="mb-4">
+          <Image
+            src={recipe.image}
+            alt={recipe.name}
+            width={600}
+            height={400}
+            objectFit="cover"
+            className="rounded-lg"
+          />
+        </div>
+      )}
       <p className="text-gray-600 mb-4">カテゴリー: {recipe.category}</p>
       <h2 className="text-2xl font-semibold mb-2">材料:</h2>
       <ul className="list-disc pl-5 mb-4">
@@ -36,7 +49,7 @@ export default function RecipeDetail() {
         ))}
       </ul>
       <h2 className="text-2xl font-semibold mb-2">作り方:</h2>
-      <p>{recipe.instructions}</p>
+      <p className="whitespace-pre-line">{recipe.instructions}</p>
     </Layout>
   )
 }

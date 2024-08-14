@@ -1,4 +1,4 @@
-import { getRecipes, updateRecipes, uploadImage } from '../../../lib/github';
+import { getRecipes, updateRecipes, uploadImage, getImageMetadata, updateImageMetadata } from '../../../lib/github';
 import formidable from 'formidable';
 import fs from 'fs/promises';
 
@@ -48,11 +48,26 @@ export default async function handler(req, res) {
           instructions: fields.instructions,
         };
 
+        // 画像の処理
         if (files.image) {
-          const imageName = `${id}-${files.image.name}`;
           const imageBuffer = await fs.readFile(files.image.path);
-          await uploadImage(imageName, imageBuffer);
-          updatedRecipe.image = imageName;
+          const imageMetadata = {
+            title: updatedRecipe.name,
+            uploadDate: new Date().toISOString(),
+            fileSize: files.image.size,
+            width: 1200, // これは実際の画像サイズに応じて調整する必要があります
+            height: 800, // これは実際の画像サイズに応じて調整する必要があります
+            recipeId: updatedRecipe.id,
+            uploadedBy: fields.uploadedBy
+          };
+
+          // 古い画像がある場合は削除
+          if (updatedRecipe.image) {
+            await deleteImage(updatedRecipe.image);
+          }
+
+          const uploadedImage = await uploadImage(imageBuffer, imageMetadata);
+          updatedRecipe.image = uploadedImage.path;
         }
 
         recipes.cocktails[index] = updatedRecipe;
@@ -64,8 +79,32 @@ export default async function handler(req, res) {
         res.status(500).json({ error: 'Failed to update recipe' });
       }
     });
+  } else if (req.method === 'DELETE') {
+    try {
+      const recipes = await getRecipes();
+      const index = recipes.cocktails.findIndex(r => r.id.toString() === id);
+      if (index === -1) {
+        res.status(404).json({ error: 'Recipe not found' });
+        return;
+      }
+
+      const deletedRecipe = recipes.cocktails[index];
+
+      // 関連する画像を削除
+      if (deletedRecipe.image) {
+        await deleteImage(deletedRecipe.image);
+      }
+
+      recipes.cocktails.splice(index, 1);
+      await updateRecipes(recipes);
+
+      res.status(200).json({ message: 'Recipe deleted successfully' });
+    } catch (error) {
+      console.error('Error deleting recipe:', error);
+      res.status(500).json({ error: 'Failed to delete recipe' });
+    }
   } else {
-    res.setHeader('Allow', ['GET', 'PUT']);
+    res.setHeader('Allow', ['GET', 'PUT', 'DELETE']);
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
