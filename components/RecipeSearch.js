@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react'
 
 export default function RecipeSearch({ onSearch }) {
@@ -14,7 +16,7 @@ export default function RecipeSearch({ onSearch }) {
         type="text"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        placeholder="レシピを検索..."
+        placeholder="レシピ名、材料、カテゴリーでレシピを検索..."
         className="w-full p-2 border rounded"
       />
       <button type="submit" className="mt-2 bg-blue-500 text-white px-4 py-2 rounded">

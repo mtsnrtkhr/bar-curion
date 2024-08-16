@@ -1,37 +1,28 @@
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import Image from 'next/image'
-import Layout from '../../components/Layout'
-//import { initDB, getRecipeById } from '../../lib/lowdb'
-import { initClientDB, getRecipeById } from '../../lib/clientDB'
-import { fetchRecipesData } from '../../lib/github'
+'use client'
 
-export default function RecipeDetail() {
-  const router = useRouter()
-  const { id } = router.query
-  const [recipe, setRecipe] = useState(null)
+import { useState, useEffect } from 'react'
+import Image from 'next/image'
+import Layout from '../../../components/Layout'
+import { initClientDB, getRecipeById } from '../../../lib/clientDB'
+
+export default function RecipeDetail({ params }: { params: { id: string } }) {
+  const [recipe, setRecipe] = useState<any>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function loadRecipe() {
-      if (id) {
-        try {
-          await initClientDB() // データベースの初期化
-          const recipeData = await getRecipeById(Number(id))
-          if (recipeData) {
-            setRecipe(recipeData)
-          } else {
-            console.log("Recipe database not found")
-          }
-        } catch (error) {
-          console.error('Error loading recipe:', error)
-        } finally {
-          setLoading(false)
-        }
+      try {
+        await initClientDB()
+        const recipeData = await getRecipeById(Number(params.id))
+        setRecipe(recipeData)
+      } catch (error) {
+        console.error('Error loading recipe:', error)
+      } finally {
+        setLoading(false)
       }
     }
     loadRecipe()
-  }, [id])
+  }, [params.id])
 
   if (loading) return <div>Loading...</div>
   if (!recipe) return <div>Recipe not found</div>
@@ -53,7 +44,7 @@ export default function RecipeDetail() {
       <p className="text-gray-600 mb-4">カテゴリー: {recipe.category}</p>
       <h2 className="text-2xl font-semibold mb-2">材料:</h2>
       <ul className="list-disc pl-5 mb-4">
-        {recipe.ingredients.map((ingredient, index) => (
+        {recipe.ingredients.map((ingredient: any, index: number) => (
           <li key={index}>
             {ingredient.name}: {ingredient.amount}
           </li>

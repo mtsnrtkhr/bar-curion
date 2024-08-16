@@ -1,27 +1,25 @@
-import { useState } from 'react'
-import { useRouter } from 'next/router'
-import AdminLayout from '../../../components/AdminLayout'
-import AdminRecipeForm from '../../../components/AdminRecipeForm'
+'use client'
+
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'  // next/router から next/navigation に変更
+import AdminLayout from '../../AdminLayout'
+import AdminRecipeForm from './AdminRecipeForm'
 
 export default function NewRecipe() {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
 
-  const handleSubmit = async (formData) => {
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  const handleSubmit = async (formData: FormData) => {
     setIsSubmitting(true)
     try {
       const response = await fetch('/api/recipes', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.get('name'),
-          category: formData.get('category'),
-          ingredients: JSON.parse(formData.get('ingredients')),
-          instructions: formData.get('instructions'),
-          image: null // 画像は任意なので、ここではnullを設定
-        }),
+        body: formData,  // Content-Type ヘッダーを削除し、FormData をそのまま送信
       })
 
       if (!response.ok) {
@@ -35,6 +33,10 @@ export default function NewRecipe() {
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  if (!isMounted) {
+    return null // または loading indicator
   }
 
   return (

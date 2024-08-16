@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'data/recipes.json'
+      - 'public/data/recipes.json'
       - 'public/images/recipes/**'
   workflow_dispatch:
 

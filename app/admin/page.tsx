@@ -1,4 +1,4 @@
-import AdminLayout from '../../components/AdminLayout';
+import AdminLayout from './AdminLayout';
 import Link from 'next/link'
 
 export default function AdminDashboard() {

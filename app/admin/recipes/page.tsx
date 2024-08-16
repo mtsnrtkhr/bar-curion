@@ -1,11 +1,14 @@
+'use client'
+
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import AdminLayout from '../../../components/AdminLayout'
+import AdminLayout from '../AdminLayout'
 import RecipeSearch from '../../../components/RecipeSearch'
+import { Recipe } from './types'
 
 export default function AdminRecipes() {
-  const [recipes, setRecipes] = useState([])
-  const [filteredRecipes, setFilteredRecipes] = useState([])
+  const [recipes, setRecipes] = useState<Recipe[]>([])
+  const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -28,7 +31,7 @@ export default function AdminRecipes() {
     }
   }
 
-  const handleSearch = (searchTerm) => {
+  const handleSearch = (searchTerm: string) => {
     const filtered = recipes.filter(recipe =>
       recipe.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       recipe.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -60,3 +63,4 @@ export default function AdminRecipes() {
     </AdminLayout>
   )
 }
+

@@ -1,17 +1,26 @@
-// components/AdminRecipeForm.js
-import { useState, useEffect } from 'react'
+'use client'
+
+import { useState, useEffect, ChangeEvent } from 'react'
 import Image from 'next/image'
 import imageCompression from 'browser-image-compression';
+import { Recipe } from '../types'; // Recipeタイプをインポート
 
-export default function AdminRecipeForm({ initialRecipe, onSubmit }) {
-  const [recipe, setRecipe] = useState(initialRecipe || {
-    name: '',
-    category: '',
-    ingredients: [{ name: '', amount: '' }],
-    instructions: '',
-    image: null
-  });
-  const [imagePreview, setImagePreview] = useState(null);
+type AdminRecipeFormProps = {
+  initialRecipe?: Recipe;
+  onSubmit: (formData: FormData) => Promise<void>;
+  isSubmitting: boolean;
+}
+
+export default function AdminRecipeForm({ initialRecipe, onSubmit, isSubmitting}: AdminRecipeFormProps) {
+  const [recipe, setRecipe] = useState<Recipe>(() => ({
+    id: initialRecipe?.id || '',
+    name: initialRecipe?.name || '',
+    category: initialRecipe?.category || '',
+    ingredients: initialRecipe?.ingredients || [{ name: '', amount: '' }],
+    instructions: initialRecipe?.instructions || '',
+    image: initialRecipe?.image || null
+  }));
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   useEffect(() => {
     if (initialRecipe && initialRecipe.image) {
@@ -19,14 +28,13 @@ export default function AdminRecipeForm({ initialRecipe, onSubmit }) {
     }
   }, [initialRecipe]);
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setRecipe({ ...recipe, [e.target.name]: e.target.value })
   };
 
-  const handleImageChange = async (e) => {
-    const file = e.target.files[0];
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (file) {
-      // 画像の圧縮
       const options = {
         maxSizeMB: 1,
         maxWidthOrHeight: 1920,
@@ -36,8 +44,9 @@ export default function AdminRecipeForm({ initialRecipe, onSubmit }) {
         const compressedFile = await imageCompression(file, options);
         const reader = new FileReader();
         reader.onloadend = () => {
-          setImagePreview(reader.result);
-          setRecipe({ ...recipe, image: reader.result });
+          const result = reader.result as string;
+          setImagePreview(result);
+          setRecipe({ ...recipe, image: result });
         };
         reader.readAsDataURL(compressedFile);
       } catch (error) {
@@ -46,43 +55,54 @@ export default function AdminRecipeForm({ initialRecipe, onSubmit }) {
     }
   };
 
-  const handleIngredientChange = (index, e) => {
-    const newIngredients = recipe.ingredients.map((ingredient, i) => {
+  const handleIngredientChange = (index: number, e: ChangeEvent<HTMLInputElement>) => {
+    const newIngredients = recipe.ingredients?.map((ingredient, i) => {
       if (i === index) {
         return { ...ingredient, [e.target.name]: e.target.value }
       }
       return ingredient
-    })
+    }) || [];
     setRecipe({ ...recipe, ingredients: newIngredients })
   };
 
   const addIngredient = () => {
     setRecipe({
       ...recipe,
-      ingredients: [...recipe.ingredients, { name: '', amount: '' }]
+      ingredients: [...(recipe.ingredients || []), { name: '', amount: '' }]
     })
   };
 
-  const removeIngredient = (index) => {
-    const newIngredients = recipe.ingredients.filter((_, i) => i !== index)
+  const removeIngredient = (index: number) => {
+    const newIngredients = recipe.ingredients?.filter((_, i) => i !== index) || [];
     setRecipe({ ...recipe, ingredients: newIngredients })
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData();
-    for (const key in recipe) {
-      if (key === 'ingredients') {
-        formData.append(key, JSON.stringify(recipe[key]));
-      } else if (key === 'image' && recipe[key]) {
+
+    // recipe の各プロパティを明示的に処理
+    if (recipe.id) formData.append('id', recipe.id);
+    if (recipe.name) formData.append('name', recipe.name);
+    if (recipe.category) formData.append('category', recipe.category);
+    if (recipe.instructions) formData.append('instructions', recipe.instructions);
+
+    // ingredients の処理
+    if (recipe.ingredients) {
+      formData.append('ingredients', JSON.stringify(recipe.ingredients));
+    }
+
+    // image の処理
+    if (recipe.image) {
+      try {
         // Base64 データを Blob に変換
-        const blob = await fetch(recipe[key]).then(r => r.blob());
+        const blob = await fetch(recipe.image).then(r => r.blob());
         formData.append('image', blob, 'image.jpg');
-      } else {
-        formData.append(key, recipe[key]);
+      } catch (error) {
+        console.error('Error processing image:', error);
       }
     }
-    formData.append('uploadedBy', currentUser);
+
     await onSubmit(formData);
   };
 
@@ -149,7 +169,7 @@ export default function AdminRecipeForm({ initialRecipe, onSubmit }) {
           value={recipe.instructions}
           onChange={handleChange}
           className="w-full p-2 border rounded"
-          rows="4"
+          rows={4}
         ></textarea>
       </div>
       <div>
