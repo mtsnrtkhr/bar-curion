@@ -4,6 +4,7 @@ const nextConfig = {
     images: {
       unoptimized: true,
     },
+    output: "export", //静的エクスポートの設定(Github Pages用)
 };
 
 export default nextConfig;

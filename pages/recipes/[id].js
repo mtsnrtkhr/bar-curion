@@ -2,27 +2,39 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Layout from '../../components/Layout'
-import { initDB, getRecipeById } from '../../lib/lowdb'
+//import { initDB, getRecipeById } from '../../lib/lowdb'
+import { initClientDB, getRecipeById } from '../../lib/clientDB'
 import { fetchRecipesData } from '../../lib/github'
 
 export default function RecipeDetail() {
   const router = useRouter()
   const { id } = router.query
   const [recipe, setRecipe] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    async function loadData() {
+    async function loadRecipe() {
       if (id) {
-        await initDB()
-        await fetchRecipesData() // This will initialize the db with the fetched data
-        const recipeData = await getRecipeById(id)
-        setRecipe(recipeData)
+        try {
+          await initClientDB() // データベースの初期化
+          const recipeData = await getRecipeById(Number(id))
+          if (recipeData) {
+            setRecipe(recipeData)
+          } else {
+            console.log("Recipe database not found")
+          }
+        } catch (error) {
+          console.error('Error loading recipe:', error)
+        } finally {
+          setLoading(false)
+        }
       }
     }
-    loadData()
+    loadRecipe()
   }, [id])
 
-  if (!recipe) return <div>Loading...</div>
+  if (loading) return <div>Loading...</div>
+  if (!recipe) return <div>Recipe not found</div>
 
   return (
     <Layout>
@@ -32,10 +44,9 @@ export default function RecipeDetail() {
           <Image
             src={recipe.image}
             alt={recipe.name}
-            width={600}
-            height={400}
+            width={300}
+            height={300}
             objectFit="cover"
-            className="rounded-lg"
           />
         </div>
       )}
@@ -49,7 +60,7 @@ export default function RecipeDetail() {
         ))}
       </ul>
       <h2 className="text-2xl font-semibold mb-2">作り方:</h2>
-      <p className="whitespace-pre-line">{recipe.instructions}</p>
+      <p>{recipe.instructions}</p>
     </Layout>
   )
 }

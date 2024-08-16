@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import ForceGraph2D from 'react-force-graph-2d';
+import ForceGraph2D from 'react-force-graph';
 
 const GraphVisualization = ({ data }) => {
   const graphRef = useRef();
