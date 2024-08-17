@@ -1,0 +1,91 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "name": "マティーニ",
+      "group": "cocktail"
+    },
+    {
+      "id": "ingredient-ジン",
+      "name": "ジン",
+      "group": "ingredient"
+    },
+    {
+      "id": "ingredient-ドライベルモット",
+      "name": "ドライベルモット",
+      "group": "ingredient"
+    },
+    {
+      "id": 2,
+      "name": "グラスホッパー",
+      "group": "cocktail"
+    },
+    {
+      "id": "ingredient-クリーム",
+      "name": "クリーム",
+      "group": "ingredient"
+    },
+    {
+      "id": "ingredient-メンソールリキュール",
+      "name": "メンソールリキュール",
+      "group": "ingredient"
+    },
+    {
+      "id": "ingredient-カカオリキュール",
+      "name": "カカオリキュール",
+      "group": "ingredient"
+    },
+    {
+      "id": 3,
+      "name": "マティーニ・グラスホッパー",
+      "group": "cocktail"
+    },
+    {
+      "id": "ingredient-マティーニ",
+      "name": "マティーニ",
+      "group": "ingredient"
+    },
+    {
+      "id": "ingredient-グラスホッパー",
+      "name": "グラスホッパー",
+      "group": "ingredient"
+    }
+  ],
+  "links": [
+    {
+      "source": 1,
+      "target": "ingredient-ジン",
+      "value": 6
+    },
+    {
+      "source": 1,
+      "target": "ingredient-ドライベルモット",
+      "value": 1
+    },
+    {
+      "source": 2,
+      "target": "ingredient-クリーム",
+      "value": 3
+    },
+    {
+      "source": 2,
+      "target": "ingredient-メンソールリキュール",
+      "value": 3
+    },
+    {
+      "source": 2,
+      "target": "ingredient-カカオリキュール",
+      "value": 3
+    },
+    {
+      "source": 3,
+      "target": "ingredient-マティーニ",
+      "value": 3
+    },
+    {
+      "source": 3,
+      "target": "ingredient-グラスホッパー",
+      "value": 3
+    }
+  ]
+}

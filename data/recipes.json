@@ -1,0 +1,45 @@
+{
+    "cocktails": [
+      {
+        "id": 1,
+        "name": "マティーニ",
+        "ingredients": [
+          {"id": 101, "name": "ジン", "amount": "60ml"},
+          {"id": 102, "name": "ドライベルモット", "amount": "10ml"}
+        ],
+        "instructions": "氷と材料をミキシンググラスで混ぜ、カクテルグラスに注ぐ。",
+        "category": "クラシック",
+        "image": "/images/recipes/550e8400-e29b-41d4-a716-446655440000.jpg"
+      },
+      {
+        "id": 2,
+        "name": "グラスホッパー",
+        "ingredients": [
+          {"id": 103, "name": "クリーム", "amount": "30ml"},
+          {"id": 104, "name": "メンソールリキュール", "amount": "30ml"},
+          {"id": 105, "name": "カカオリキュール", "amount": "30ml"}
+        ],
+        "instructions": "全ての材料をシェイカーに入れ、よく振ってカクテルグラスに注ぐ。",
+        "category": "アフターディナー",
+        "image": "/images/recipes/6ba7b810-9dad-11d1-80b4-00c04fd430c8.jpg"
+      },
+      {
+        "id": 3,
+        "name": "マティーニ・グラスホッパー",
+        "ingredients": [
+          {"id": 1, "name": "マティーニ", "amount": "30ml", "type": "cocktail"},
+          {"id": 2, "name": "グラスホッパー", "amount": "30ml", "type": "cocktail"}
+        ],
+        "instructions": "マティーニとグラスホッパーを等量混ぜ、カクテルグラスに注ぐ。",
+        "category": "クリエイティブ",
+        "image": ""
+      }
+    ],
+    "ingredients": [
+      {"id": 101, "name": "ジン", "type": "スピリッツ", "alcohol_content": 40},
+      {"id": 102, "name": "ドライベルモット", "type": "ワイン", "alcohol_content": 18},
+      {"id": 103, "name": "クリーム", "type": "ノンアルコール", "alcohol_content": 0},
+      {"id": 104, "name": "メンソールリキュール", "type": "リキュール", "alcohol_content": 24},
+      {"id": 105, "name": "カカオリキュール", "type": "リキュール", "alcohol_content": 20}
+    ]
+}

@@ -1,0 +1,8 @@
+2:I[6513,[],"ClientPageRoot"]
+3:I[6774,["231","static/chunks/231-7d1f5bc6b838a880.js","974","static/chunks/974-b534388fb2bc945f.js","931","static/chunks/app/page-112a5a04d7b5860b.js"],"default"]
+4:I[1060,["185","static/chunks/app/layout-7c2001bb757491e0.js"],"default"]
+5:I[9275,[],""]
+6:I[1343,[],""]
+0:["sXJ6fRhkqQ29ItXvZo6aE",[[["",{"children":["__PAGE__",{}]},"$undefined","$undefined",true],["",{"children":["__PAGE__",{},[["$L1",["$","$L2",null,{"props":{"params":{},"searchParams":{}},"Component":"$3"}]],null],null]},[["$","html",null,{"lang":"en","children":["$","body",null,{"children":[["$","$L4",null,{}],["$","$L5",null,{"parallelRouterKey":"children","segmentPath":["children"],"error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":["$","div",null,{"children":[["$","h2",null,{"children":"Not Found"}],["$","p",null,{"children":"Could not find requested resource"}]]}],"notFoundStyles":[],"styles":null}]]}]}],null],null],[[["$","link","0",{"rel":"stylesheet","href":"./_next/static/css/c531e3e4372a143b.css","precedence":"next","crossOrigin":"$undefined"}]],[null,"$L7"]]]]]
+7:[["$","meta","0",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","1",{"charSet":"utf-8"}],["$","title","2",{"children":"Bar Curion"}],["$","meta","3",{"name":"description","content":"Cocktail recipe management app"}],["$","link","4",{"rel":"icon","href":"/bar-curion/favicon.ico","type":"image/x-icon","sizes":"16x16"}]]
+1:null

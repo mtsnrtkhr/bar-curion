@@ -1,0 +1,16 @@
+{
+    "images": [
+      {
+        "id": "1",
+        "path": "/images/recipes/550e8400-e29b-41d4-a716-446655440000.jpg",
+        "filename": "550e8400-e29b-41d4-a716-446655440000.jpg",
+        "title": "マティーニ",
+        "uploadDate": "2023-08-15T10:30:00Z",
+        "fileSize": 102400,
+        "width": 800,
+        "height": 600,
+        "recipeId": 1,
+        "uploadedBy": "mtsnrtkhr"
+      }
+    ]
+  }
