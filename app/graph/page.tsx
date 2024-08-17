@@ -1,5 +1,9 @@
+'use client'
+
+import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import Layout from '../../components/Layout'
+import GraphSearch from './GraphSerch'
 
 const GraphVisualizationWrapper = dynamic(() => import('./GraphVisualizationWrapper'), {
   ssr: false,
@@ -7,39 +11,17 @@ const GraphVisualizationWrapper = dynamic(() => import('./GraphVisualizationWrap
 })
 
 export default function GraphPage() {
+  const [searchTerm, setSearchTerm] = useState('')
+
+  const handleSearch = (term: string) => {
+    setSearchTerm(term)
+  }
+
   return (
     <Layout>
       <h1 className="text-3xl font-bold mb-4">カクテルと材料の関係グラフ</h1>
-      <GraphVisualizationWrapper />
+      <GraphSearch onSearch={handleSearch} />
+      <GraphVisualizationWrapper searchTerm={searchTerm} />
     </Layout>
   )
 }
-/*
-'use client'
-
-import { useState, useEffect } from 'react';
-import Layout from '../../components/Layout';
-import GraphVisualization from './GraphVisualization';
-
-export default function GraphPage() {
-  const [graphData, setGraphData] = useState(null);
-
-  useEffect(() => {
-    fetch('/data/graph-data.json')
-      .then(response => response.json())
-      .then(data => setGraphData(data))
-      .catch(error => console.error('Error loading graph data:', error));
-  }, []);
-
-  return (
-    <Layout>
-      <h1 className="text-3xl font-bold mb-4">カクテルと材料の関係グラフ</h1>
-      {graphData ? (
-        <GraphVisualization data={graphData} />
-      ) : (
-        <p>グラフデータを読み込んでいます...</p>
-      )}
-    </Layout>
-  );
-}
-*/
