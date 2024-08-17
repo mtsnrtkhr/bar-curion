@@ -41,16 +41,23 @@ export default function RecipeSearch({ onSearch }) {
         onChange={(e) => setSearchTerm(e.target.value)}
         placeholder={searchMode === 'simple'
           ? "レシピ名、材料、カテゴリーでレシピを検索..."
-          : "例: ingredients:(ジン OR クリーム) AND category:クラシック"}
+          : "例: ingredients:ジン category:クラシック"}
         className="w-full p-2 border rounded"
       />
       <button type="submit" className="mt-2 bg-blue-500 text-white px-4 py-2 rounded">
         検索
       </button>
+      {searchMode === 'simple' && (
+        <p className="mt-2 text-sm text-gray-600">
+          ヒント: 複数のキーワードはAND検索になります。完全一致検索には""を使用してください。
+          例: "ドライ マティーニ" ジン
+        </p>
+      )}
       {searchMode === 'advanced' && (
         <p className="mt-2 text-sm text-gray-600">
-          高度な検索: AND, OR, "完全一致", -除外 が使用可能です。
-          例: ingredients:(ジン OR クリーム) AND category:クラシック -name:"ドライ マティーニ"
+          高度な検索: キーを指定して検索できます。キーなしの検索も可能です。
+          完全一致には""、前方一致には末尾に*、後方一致には先頭に*を使用できます。
+          例: ingredients:ジン category:クラシック "ドライ マティーニ"
         </p>
       )}
     </form>
