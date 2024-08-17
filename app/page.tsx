@@ -10,7 +10,7 @@ import { Recipe } from './admin/recipes/types'
 
 export default function Home() {
   const router = useRouter()
-  const [recipes, setRecipes] = useState<Recipe[]>([])
+  //const [recipes, setRecipes] = useState<Recipe[]>([])
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([])
 
   useEffect(() => {
@@ -25,19 +25,14 @@ export default function Home() {
     async function loadData() {
       await initClientDB()
       const recipeData = await getRecipes()
-      setRecipes(recipeData)
+      //setRecipes(recipeData)
       setFilteredRecipes(recipeData)
     }
     loadData()
   }, [])
 
-  const handleSearch = (searchTerm: string) => {
-    const filtered = recipes.filter(recipe =>
-      recipe.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      recipe.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      recipe.ingredients.some(ing => ing.name.toLowerCase().includes(searchTerm.toLowerCase()))
-    )
-    setFilteredRecipes(filtered)
+  const handleSearch = async (searchResults: Recipe[]) => {
+    setFilteredRecipes(searchResults)
   }
 
   return (

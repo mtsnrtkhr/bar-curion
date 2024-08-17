@@ -9,7 +9,7 @@ import { fetchRecipesData } from '../../lib/github'
 import { Recipe } from '../admin/recipes/types'
 
 export default function Recipes() {
-  const [recipes, setRecipes] = useState<Recipe[]>([])
+  //const [recipes, setRecipes] = useState<Recipe[]>([])
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([])
 
   useEffect(() => {
@@ -17,19 +17,14 @@ export default function Recipes() {
       await initClientDB()
       const data = await fetchRecipesData()
       await getRecipes() // This will initialize the db with the fetched data
-      setRecipes(data.cocktails)
+      //setRecipes(data.cocktails)
       setFilteredRecipes(data.cocktails)
     }
     loadData()
   }, [])
 
-  const handleSearch = (searchTerm: string) => {
-    const filtered = recipes.filter(recipe =>
-      recipe.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      recipe.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      recipe.ingredients.some(ing => ing.name.toLowerCase().includes(searchTerm.toLowerCase()))
-    )
-    setFilteredRecipes(filtered)
+  const handleSearch = async (searchResults: Recipe[]) => {
+    setFilteredRecipes(searchResults)
   }
 
   return (
