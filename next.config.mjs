@@ -5,10 +5,8 @@ const nextConfig = {
     unoptimized: true,
   },
   output: 'export',
-  //assetPrefix: process.env.NODE_ENV === 'production' ? './' : '',
-  //assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || './',
-  assetPrefix: '/bar-curion',
-  //basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
+  assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || './',
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
   trailingSlash: true,
 
 
