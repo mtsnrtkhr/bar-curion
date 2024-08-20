@@ -9,8 +9,13 @@ export default function RecipeSearch({ onSearch }) {
 
   const handleSearch = async (e) => {
     e.preventDefault()
-    const results = await searchRecipes(searchTerm, searchMode === 'advanced')
-    onSearch(results)
+    try {
+      const results = await searchRecipes(searchTerm, searchMode === 'advanced')
+      onSearch(results)
+    } catch (error) {
+      console.error('Search error:', error)
+      // ユーザーにエラーメッセージを表示するなどの処理を追加
+    }
   }
 
   return (
@@ -49,15 +54,19 @@ export default function RecipeSearch({ onSearch }) {
       </button>
       {searchMode === 'simple' && (
         <p className="mt-2 text-sm text-gray-600">
-          ヒント: 複数のキーワードはAND検索になります。完全一致検索には""を使用してください。
-          例: "ドライ マティーニ" ジン
+          ヒント: 複数のキーワードはAND検索になります。完全一致検索には&quot;&quot;を使用してください。
+          例: &quot;ドライ マティーニ&quot; ジン
         </p>
       )}
       {searchMode === 'advanced' && (
         <p className="mt-2 text-sm text-gray-600">
-          高度な検索: キーを指定して検索できます。キーなしの検索も可能です。
-          完全一致には""、前方一致には末尾に*、後方一致には先頭に*を使用できます。
-          例: ingredients:ジン category:クラシック "ドライ マティーニ"
+          高度な検索: キーを指定して検索できます（例: ingredients:ジン）。
+          完全一致には&quot;&quot;、前方一致には末尾に*、後方一致には先頭に*を使用できます。
+          除外検索にはキーまたは単語の前に-を付けてください。
+          OR検索には大文字のORを使用します。ANDは空白またはANDで表現できます。
+          括弧()でグループ化できます。
+          キーを指定しない場合は全項目が検索対象になります。
+          例: -ingredients:(クリーム OR *ティーニ) name:ホッパー
         </p>
       )}
     </form>
