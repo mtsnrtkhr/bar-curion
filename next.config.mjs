@@ -5,7 +5,8 @@ const nextConfig = {
     unoptimized: true,
   },
   output: 'export',
-  assetPrefix: process.env.NODE_ENV === 'production' ? '.' : '',
+  assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || './',
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
   trailingSlash: true,
 
 
@@ -14,7 +15,7 @@ const nextConfig = {
       config.resolve.fallback = {
         ...config.resolve.fallback,
         fs: false,
-        //path: false,
+        path: false,
         net: false,
         tls: false,
         child_process: false,

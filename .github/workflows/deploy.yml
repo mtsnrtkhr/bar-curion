@@ -13,9 +13,22 @@ jobs:
   update-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 2  # To be able to get the changed files
+
+      - name: Cache Dependency
+        uses: actions/cache@v4
+        with:
+          # See here for caching with `yarn` https://github.com/actions/cache/blob/main/examples.md#node---yarn or you can leverage caching with actions/setup-node https://github.com/actions/setup-node
+          path: |
+            ~/.npm
+            ${{ github.workspace }}/.next/cache
+          # Generate a new cache whenever packages or source files change.
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+          # If source files changed but packages didn't, rebuild from a prior cache.
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
       - name: Get changed files
         id: changed-files
@@ -41,12 +54,17 @@ jobs:
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          git add data/graph-data.json
+          git add public/data/graph-data.json
           git diff --quiet && git diff --staged --quiet || (git commit -m "Update graph data" && git push)
 
       - name: Build
         if: steps.changed-files.outputs.files != ''
-        run: npm run build && npm run export
+        run: npm run build
+        env:
+          NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
+
+      - name: Add nojekyll
+        run: touch ./out/.nojekyll
 
       - name: Deploy to GitHub Pages
         if: steps.changed-files.outputs.files != ''

@@ -4,6 +4,7 @@ import { useState, useEffect, ChangeEvent } from 'react'
 import Image from 'next/image'
 import imageCompression from 'browser-image-compression';
 import { Recipe } from '../types'; // Recipeタイプをインポート
+import { getAssetPath } from '../../../utils/assetHelpers';
 
 type AdminRecipeFormProps = {
   initialRecipe?: Recipe;
@@ -24,7 +25,7 @@ export default function AdminRecipeForm({ initialRecipe, onSubmit, isSubmitting}
 
   useEffect(() => {
     if (initialRecipe && initialRecipe.image) {
-      setImagePreview(`/images/recipes/${initialRecipe.image}`)
+      setImagePreview(getAssetPath(`/images/recipes/${initialRecipe.image}`))
     }
   }, [initialRecipe]);
 

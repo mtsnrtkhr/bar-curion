@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Layout from '../../../components/Layout'
 import { Recipe } from '../../admin/recipes/types'
+import { getAssetPath } from '../../../app/utils/assetHelpers';
 
 export default function RecipeDetailStatic({ recipe }: { recipe: Recipe }) {
   if (!recipe) return <div>Recipe not found</div>
@@ -13,7 +14,7 @@ export default function RecipeDetailStatic({ recipe }: { recipe: Recipe }) {
       {recipe.image && (
         <div className="mb-4">
           <Image
-            src={recipe.image}
+            src={ getAssetPath(recipe.image)}
             alt={recipe.name}
             width={300}
             height={300}
