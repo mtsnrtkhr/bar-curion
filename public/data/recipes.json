@@ -4,8 +4,8 @@
         "id": 1,
         "name": "マティーニ",
         "ingredients": [
-          {"id": 101, "name": "ジン", "amount": "60ml"},
-          {"id": 102, "name": "ドライベルモット", "amount": "10ml"}
+          {"ingredient_id": 101, "name": "ジン", "amount": "60ml"},
+          {"ingredient_id": 102, "name": "ドライベルモット", "amount": "10ml"}
         ],
         "instructions": "氷と材料をミキシンググラスで混ぜ、カクテルグラスに注ぐ。",
         "category": "クラシック",
@@ -15,9 +15,9 @@
         "id": 2,
         "name": "グラスホッパー",
         "ingredients": [
-          {"id": 103, "name": "クリーム", "amount": "30ml"},
-          {"id": 104, "name": "メンソールリキュール", "amount": "30ml"},
-          {"id": 105, "name": "カカオリキュール", "amount": "30ml"}
+          {"ingredient_id": 103, "name": "クリーム", "amount": "30ml"},
+          {"ingredient_id": 104, "name": "メンソールリキュール", "amount": "30ml"},
+          {"ingredient_id": 105, "name": "カカオリキュール", "amount": "30ml"}
         ],
         "instructions": "全ての材料をシェイカーに入れ、よく振ってカクテルグラスに注ぐ。",
         "category": "アフターディナー",
@@ -27,8 +27,8 @@
         "id": 3,
         "name": "マティーニ・グラスホッパー",
         "ingredients": [
-          {"id": 1, "name": "マティーニ", "amount": "30ml", "type": "cocktail"},
-          {"id": 2, "name": "グラスホッパー", "amount": "30ml", "type": "cocktail"}
+          {"ingredient_id": 1, "name": "マティーニ", "amount": "30ml", "type": "cocktail"},
+          {"ingredient_id": 2, "name": "グラスホッパー", "amount": "30ml", "type": "cocktail"}
         ],
         "instructions": "マティーニとグラスホッパーを等量混ぜ、カクテルグラスに注ぐ。",
         "category": "クリエイティブ",
@@ -36,10 +36,38 @@
       }
     ],
     "ingredients": [
-      {"id": 101, "name": "ジン", "type": "スピリッツ", "alcohol_content": 40},
-      {"id": 102, "name": "ドライベルモット", "type": "ワイン", "alcohol_content": 18},
-      {"id": 103, "name": "クリーム", "type": "ノンアルコール", "alcohol_content": 0},
-      {"id": 104, "name": "メンソールリキュール", "type": "リキュール", "alcohol_content": 24},
-      {"id": 105, "name": "カカオリキュール", "type": "リキュール", "alcohol_content": 20}
+      {"id": 101, "name": "ジン", "type": "スピリッツ", "products": [{"product_id": 1, "name": "ボンベイ・サファイア", "alcohol_content": 40}, {"product_id": 2, "name": "タンカレー", "alcohol_content": 47.3}]},
+      {"id": 102, "name": "ドライベルモット", "type": "ワイン", "products": [{"product_id": 1, "name": "ノイリー・プラット", "alcohol_content": 18}, {"product_id": 2, "name": "マルティーニ・エクストラドライ", "alcohol_content": 15}]},
+      {"id": 103, "name": "クリーム", "type": "ノンアルコール", "products": [{"product_id": 1, "name": "ホイップクリーム", "alcohol_content": 0}, {"product_id": 2, "name": "ダブルクリーム", "alcohol_content": 0}]},
+      {"id": 104, "name": "メンソールリキュール", "type": "リキュール", "products": [{"product_id": 1, "name": "ペパーミント・シュナップス", "alcohol_content": 25}, {"product_id": 2, "name": "クレーム・ド・メンテ", "alcohol_content": 24}]},
+      {"id": 105, "name": "カカオリキュール", "type": "リキュール", "products": [{"product_id": 1, "name": "ゴディバ・チョコレートリキュール", "alcohol_content": 15}, {"product_id": 2, "name": "ボルス クレーム・ド・カカオブラウン", "alcohol_content": 20}]}
+    ],
+    "arranges": [
+      {
+        "cocktails_id": 2,
+        "name": "グラスホッパー",
+        "image": [],
+        "author": { "@type": "Bar", "name": "Bar Curion"},
+        "ingredients": [
+          {"ingredient_id": 103, "product_id": 1, "amount":"30ml"},
+          {"ingredient_id": 104, "product_id": 1, "amount":"30ml"},
+          {"ingredient_id": 105, "product_id": 1, "amount":"30ml"}
+        ],
+        "instructions": "全ての材料をシェイカーに入れ、よく振ってカクテルグラスに注ぐ。",
+        "category": "アフターディナー"
+      },
+      {
+        "cocktails_id": 2,
+        "name": "グラスホッパー",
+        "image": [],
+        "author": { "@type": "Person", "name": "Matz"},
+        "ingredients": [
+          {"ingredient_id": 103, "product_id": 2, "amount":"30ml"},
+          {"ingredient_id": 104, "product_id": 2, "amount":"30ml"},
+          {"ingredient_id": 105, "product_id": 2, "amount":"30ml"}
+        ],
+        "instructions": "全ての材料をシェイカーに入れ、よく振ってカクテルグラスに注ぐ。",
+        "category": "アフターディナー"
+      }
     ]
 }
