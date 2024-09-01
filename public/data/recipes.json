@@ -4,9 +4,10 @@
         "id": 1,
         "name": "マティーニ",
         "ingredients": [
-          {"ingredient_id": 101, "name": "ジン", "amount": "60ml"},
-          {"ingredient_id": 102, "name": "ドライベルモット", "amount": "10ml"}
+          {"ingredient_id": 101, "name": "ジン", "amount": "60ml", "type": "スピリッツ"},
+          {"ingredient_id": 102, "name": "ドライベルモット", "amount": "10ml", "type": "ワイン"}
         ],
+        "alcohol_content":0,
         "instructions": "氷と材料をミキシンググラスで混ぜ、カクテルグラスに注ぐ。",
         "category": "クラシック",
         "image": "/images/recipes/550e8400-e29b-41d4-a716-446655440000.jpg"
@@ -15,10 +16,11 @@
         "id": 2,
         "name": "グラスホッパー",
         "ingredients": [
-          {"ingredient_id": 103, "name": "クリーム", "amount": "30ml"},
-          {"ingredient_id": 104, "name": "メンソールリキュール", "amount": "30ml"},
-          {"ingredient_id": 105, "name": "カカオリキュール", "amount": "30ml"}
+          {"ingredient_id": 103, "name": "クリーム", "amount": "30ml", "type": "ノンアルコール"},
+          {"ingredient_id": 104, "name": "メンソールリキュール", "amount": "30ml", "type": "スピリッツ"},
+          {"ingredient_id": 105, "name": "カカオリキュール", "amount": "30ml", "type": "スピリッツ"}
         ],
+        "alcohol_content":0,
         "instructions": "全ての材料をシェイカーに入れ、よく振ってカクテルグラスに注ぐ。",
         "category": "アフターディナー",
         "image": "/images/recipes/6ba7b810-9dad-11d1-80b4-00c04fd430c8.jpg"
@@ -30,6 +32,7 @@
           {"ingredient_id": 1, "name": "マティーニ", "amount": "30ml", "type": "cocktail"},
           {"ingredient_id": 2, "name": "グラスホッパー", "amount": "30ml", "type": "cocktail"}
         ],
+        "alcohol_content":0,
         "instructions": "マティーニとグラスホッパーを等量混ぜ、カクテルグラスに注ぐ。",
         "category": "クリエイティブ",
         "image": ""
@@ -53,6 +56,7 @@
           {"ingredient_id": 104, "product_id": 1, "amount":"30ml"},
           {"ingredient_id": 105, "product_id": 1, "amount":"30ml"}
         ],
+        "alcohol_content":0,
         "instructions": "全ての材料をシェイカーに入れ、よく振ってカクテルグラスに注ぐ。",
         "category": "アフターディナー"
       },
@@ -66,6 +70,7 @@
           {"ingredient_id": 104, "product_id": 2, "amount":"30ml"},
           {"ingredient_id": 105, "product_id": 2, "amount":"30ml"}
         ],
+        "alcohol_content":0,
         "instructions": "全ての材料をシェイカーに入れ、よく振ってカクテルグラスに注ぐ。",
         "category": "アフターディナー"
       }
