@@ -37,3 +37,6 @@ next-env.d.ts
 
 # development
 pages__
+
+# playground
+/_playground/
