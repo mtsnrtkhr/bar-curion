@@ -1,5 +1,6 @@
 # Bar Curion - Recipe Search
-このアプリケーションは、様々なカクテルのレシピを検索できるWebアプリケーションです。
+このアプリケーションは、様々なカクテルのレシピを検索できるWebアプリケーションです。  
+https://mtsnrtkhr.github.io/bar-curion/
 
 ## 機能
 
@@ -13,14 +14,14 @@
 ## セットアップ
 
 1. このリポジトリをクローンします。  
-git clone https://github.com/mtsnrtkhr/bar-curion.git
+`git clone https://github.com/mtsnrtkhr/bar-curion.git`
 
 2. 依存関係をインストールします。  
-cd bar-curion  
-npm install  
+`cd bar-curion`  
+`npm install`  
 
 3. アプリケーションを起動します。  
-npm run dev
+`npm run dev`
 
 4. ブラウザで `http://localhost:3000` にアクセスし、アプリケーションを使用できます。
 
